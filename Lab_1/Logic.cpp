@@ -36,27 +36,29 @@ void ROUND(long long &total_kop)
 }
 
 void readTovar(int grn , short int kop , int sht) {
-    FILE *file = fopen("../Chek.txt", "r");
+    FILE *file = fopen("C:\\Cpp-Labs\\Lab_1\\Chek.txt", "r"); // Встановіть власний шлях до файлу Chek.txt
 
     if (file == NULL) {
-        cout << "Ne vdalos otvoryty fail Chek.txt\n" << endl;
+        cout << "Ne vdalos otvoryty fail Chek.txt" << endl;
         return;
     }
 
-    cout << "Tovary z failu:\n";
-    cout << "------------------------\n" << endl;
+    cout << "\n\n=======| vash chek |=======" << endl;
+    cout << "---------------------------" << endl;
 
     char nazva[50];
     long long total_kop = 0;
     long long total_grn = 0;
 
-    while (fscanf(file, "%49s %d %d %d", nazva, &grn, &kop, &sht) == 4) {
+    while (fscanf(file, "%49s %d %hi %d", nazva, &grn, &kop, &sht) == 4) {
 
         if (grn < 0 || kop < 0 || sht < 0) {
-            cout << "Error :(. Takogo tovara neisnue.\n" << endl;
+            cout << "Error :(  Takogo tovara neisnue." << endl;
+            cout << "---------------------------" << endl;
             continue;
         }
-        cout << nazva << "   " << grn << "." << kop << "grn" << sht << "x" << "\n" << endl;
+        cout << nazva << "   " << grn << "grn  " << kop << "kop  " << sht << "x" << endl;
+        cout << "---------------------------" << endl;
 
         MNNSHT(grn, kop, sht);
         SUMA(grn, kop, total_kop, total_grn);
@@ -69,8 +71,7 @@ void readTovar(int grn , short int kop , int sht) {
     ROUND(total_kop);
     KOPTOGRN(total_kop, total_grn);
 
-    cout << "------------------------\n" << endl;
-    cout << "Zagalna suma: " << total_grn << " grn " << total_kop << " kop\n" << endl;
+    cout << "Vasha syma: " << total_grn << "grn  " << total_kop << "kop\n\n" << endl;
 }
 
 
