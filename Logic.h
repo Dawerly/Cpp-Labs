@@ -2,20 +2,14 @@
 #define LOGIC_H
 
 struct Tovar {
-
     int grn;
     short int kop;
-    char nazva[25];
-    int sht;
-    int sum_grn;
-    short int sum_kop;
 };
 
-extern Tovar Tovary[100];
-
-bool MNNSHT(int i);
-bool SUMA(int i);
-bool ROUND(int &total_kop);
-// bool KOPTOGRN(int &total_kop , int &total_grn);
+void MNNSHT(int &grn , short int &kop , int sht);
+void SUMA(int &grn , short int &kop , long long &total_kop , long long &total_grn);
+void KOPTOGRN(long long &total_kop , long long &total_grn);
+void ROUND(long long &total_kop);
+void readTovar(int grn , short int kop , int sht);
 
 #endif
