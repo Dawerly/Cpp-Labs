@@ -4,21 +4,19 @@
 
 using namespace std;
 
-int sht;
-
 void MNNSHT(int &grn , short int &kop , int sht)  
 {
     kop = kop * sht;
     grn = grn * sht;
 }
 
-void SUMA(int &grn , short int &kop , long long &total_kop , long long &total_grn)
+void SUMA(int &grn , short int &kop , short int &total_kop , int &total_grn)
 {
     total_grn += grn;
     total_kop += kop;   
 }
 
-void KOPTOGRN(long long &total_kop , long long &total_grn)
+void KOPTOGRN( short int &total_kop , int &total_grn)
 {
     while(total_kop >= 100)
     {
@@ -27,7 +25,7 @@ void KOPTOGRN(long long &total_kop , long long &total_grn)
     }
 }
 
-void ROUND(long long &total_kop)
+void ROUND(short int &total_kop)
 {
     int ost = total_kop % 10;
     int b = 10-ost;
@@ -47,8 +45,8 @@ void readTovar(int grn , short int kop , int sht) {
     cout << "---------------------------" << endl;
 
     char nazva[50];
-    long long total_kop = 0;
-    long long total_grn = 0;
+    short int total_kop = 0;
+    int total_grn = 0;
 
     while (fscanf(file, "%49s %d %hi %d", nazva, &grn, &kop, &sht) == 4) {
 
@@ -72,6 +70,7 @@ void readTovar(int grn , short int kop , int sht) {
     KOPTOGRN(total_kop, total_grn);
 
     cout << "Vasha syma: " << total_grn << "grn  " << total_kop << "kop\n\n" << endl;
+    
 }
 
 

@@ -3,7 +3,7 @@
 #include "Logic.h"
 
 int main() {
-    readTovar(0, 0, 0);
+    readTovar();
     return 0;
 };
 
