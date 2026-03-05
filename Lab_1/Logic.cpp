@@ -33,33 +33,35 @@ void ROUND(short int &total_kop)
     if (ost == 4 || ost == 5|| ost == 6 || ost == 7 || ost == 8 || ost == 9) total_kop+=b;
 }
 
-void readTovar(int grn , short int kop , int sht) {
+void readTovar() {
     FILE *file = fopen("C:\\Cpp-Labs\\Lab_1\\Chek.txt", "r"); // Встановіть власний шлях до файлу Chek.txt
 
     if (file == NULL) {
         cout << "Ne vdalos otvoryty fail Chek.txt" << endl;
-        return;
+        return ;
     }
 
     cout << "\n\n=======| vash chek |=======" << endl;
     cout << "---------------------------" << endl;
 
+    Tovar tovar;
+    int sht=0;
     char nazva[50];
     short int total_kop = 0;
     int total_grn = 0;
 
-    while (fscanf(file, "%49s %d %hi %d", nazva, &grn, &kop, &sht) == 4) {
+    while (fscanf(file, "%49s %d %hi %d", nazva, &tovar.grn, &tovar.kop, &sht) == 4) {
 
-        if (grn < 0 || kop < 0 || sht < 0) {
+        if (tovar.grn < 0 || tovar.kop < 0 || sht < 0) {
             cout << "Error :(  Takogo tovara neisnue." << endl;
             cout << "---------------------------" << endl;
             continue;
         }
-        cout << nazva << "   " << grn << "grn  " << kop << "kop  " << sht << "x" << endl;
+        cout << nazva << "   " << tovar.grn << "grn  " << tovar.kop << "kop  " << sht << "x" << endl;
         cout << "---------------------------" << endl;
 
-        MNNSHT(grn, kop, sht);
-        SUMA(grn, kop, total_kop, total_grn);
+        MNNSHT(tovar.grn, tovar.kop, sht);
+        SUMA(tovar.grn, tovar.kop, total_kop, total_grn);
         KOPTOGRN(total_kop, total_grn);
 
     }
