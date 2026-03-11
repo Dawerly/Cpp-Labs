@@ -1,9 +1,6 @@
-Mivina 13 50 3
-Baton 8 98 2
-Maccofe 3 43 4
-Smetana 10 0 1
-Pelmeni 28 98 4
-Paraduchka 3 50 1
-Cil 2 -2 2
-
-
+Mivinac 13 50 2
+Baton 14 88 2
+Kovbasca 39 99 4
+Morozuvo 3 52 2
+Taburetka 3 0 2
+Beton -1 2 3

@@ -6,8 +6,8 @@ struct Tovar {
     short int kop;
 };
 
-void MNNSHT(int &grn , short int &kop , int sht);
-void SUMA(int &grn , short int &kop , short int &total_kop , int &total_grn);
+void MNNSHT( Tovar &tovar, int &sht);
+void SUMA( Tovar &tovar, short int &total_kop , int &total_grn);
 void KOPTOGRN( short int &total_kop , int &total_grn);
 void ROUND(short int &total_kop);  
 void readTovar(); 

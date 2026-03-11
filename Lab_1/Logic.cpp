@@ -4,16 +4,16 @@
 
 using namespace std;
 
-void MNNSHT(int &grn , short int &kop , int sht)  
+void MNNSHT( Tovar &tovar, int &sht)  
 {
-    kop = kop * sht;
-    grn = grn * sht;
+    tovar.kop = tovar.kop * sht;
+    tovar.grn = tovar.grn * sht;
 }
 
-void SUMA(int &grn , short int &kop , short int &total_kop , int &total_grn)
+void SUMA( Tovar &tovar, short int &total_kop , int &total_grn)
 {
-    total_grn += grn;
-    total_kop += kop;   
+    total_grn += tovar.grn;
+    total_kop += tovar.kop;   
 }
 
 void KOPTOGRN( short int &total_kop , int &total_grn)
@@ -60,10 +60,9 @@ void readTovar() {
         cout << nazva << "   " << tovar.grn << "grn  " << tovar.kop << "kop  " << sht << "x" << endl;
         cout << "---------------------------" << endl;
 
-        MNNSHT(tovar.grn, tovar.kop, sht);
-        SUMA(tovar.grn, tovar.kop, total_kop, total_grn);
+        MNNSHT( tovar, sht);
+        SUMA( tovar, total_kop, total_grn);
         KOPTOGRN(total_kop, total_grn);
-
     }
 
     fclose(file);
