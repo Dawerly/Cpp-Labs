@@ -5,21 +5,39 @@
 using namespace std;
 
 
-void Vidstan(double &vidstAB, double &vidstAC, double &vidstBC, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
-    vidstAB = sqrt(pow((B.x - A.x), 2) + pow((B.y - A.y), 2));
-    vidstAC = sqrt(pow((C.x - A.x), 2) + pow((C.y - A.y), 2));
-    vidstBC = sqrt(pow((C.x - B.x), 2) + pow((C.y - B.y), 2));
+
+// void Vidstan(double &vidstAB, double &vidstAC, double &vidstBC, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
+//     vidstAB = sqrt(pow((B.x - A.x), 2) + pow((B.y - A.y), 2));
+//     vidstAC = sqrt(pow((C.x - A.x), 2) + pow((C.y - A.y), 2));
+//     vidstBC = sqrt(pow((C.x - B.x), 2) + pow((C.y - B.y), 2));
+// }
+
+double distance(const Kordunaty &p1, const Kordunaty &p2) {
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 }
 
-void Heron(double &vidstAB, double &vidstAC, double &vidstBC, double &p, double &ploshcha) {
-    p = (vidstAB + vidstAC + vidstBC) / 2;
-    ploshcha = sqrt(p * (p - vidstAB) * (p - vidstAC) * (p - vidstBC));
+double heronArea(const Trukytnuk &t) {
+    double a = distance(t.A, t.B);
+    double b = distance(t.B, t.C);
+    double c = distance(t.C, t.A);
+    double s = (a + b + c) / 2.0;
+    return sqrt(s * (s - a) * (s - b) * (s - c));
+}
 
-    if (ploshcha == 0) {
-        cout << "Trukytnuk neisnue." << endl;
-        return;
-    }
-} 
+double Trukytnuk::area() const {
+    return heronArea(*this);
+}
+
+bool Trukytnuk::contains(const Kordunaty &P) const {
+    Trukytnuk T1 = {A, B, P};
+    Trukytnuk T2 = {B, C, P};
+    Trukytnuk T3 = {C, A, P};
+
+    double S_main = area();
+    double S_sum = T1.area() + T2.area() + T3.area();
+
+    return fabs(S_main - S_sum) < 1e-9; 
+}
 
 void baruscentr(Kordunaty &A, Kordunaty &B, Kordunaty &C) {
     double x_bar, y_bar;
@@ -95,7 +113,6 @@ void MetodVektornohoDobutku( Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty
 
 void Zapusk() {
     Kordunaty A, B, C;
-    double vidstAB, vidstAC, vidstBC;
     cout << "\n\n--------------------------------------" << endl;
     cout << "Vvedit koordinati A(x,y): " << endl;
     cin >> A.x >> A.y;
@@ -105,22 +122,27 @@ void Zapusk() {
     cin >> C.x >> C.y;
     cout << "--------------------------------------\n" << endl;
 
-    Vidstan(vidstAB, vidstAC, vidstBC, A, B, C);
+    Trukytnuk t = {A, B, C};
+
+    double vidstAB = distance(A, B);
+    double vidstAC = distance(A, C);
+    double vidstBC = distance(B, C);
+
     cout << "--------------------------------------" << endl;
     cout << "Vidstan mizh AB: " << vidstAB << endl;
     cout << "Vidstan mizh AC: " << vidstAC << endl; 
     cout << "Vidstan mizh BC: " << vidstBC << endl;
     cout << "--------------------------------------\n" << endl;
 
-    double ploshcha;
-    double p;
-    Heron(vidstAB, vidstAC, vidstBC, p, ploshcha);
+    double ploshcha = t.area();
+    double p = (vidstAB + vidstAC + vidstBC) / 2.0;
+
     cout << "--------------------------------------" << endl;
     cout << "Pivperumeter: " << p << endl;
     cout << "Ploshcha troykutnika za heronom: " << ploshcha << endl;
     cout << "--------------------------------------\n" << endl;
 
-    cout << "====[Koordinati seredyny storin trykutnyka:]====" << endl;
+    cout << "====[Koordinati centriv trykutnyka:]====" << endl;
     baruscentr(A, B, C);
     Incenter(A, B, C, vidstAB, vidstAC, vidstBC);
     Circumcenter(A, B, C);
@@ -133,19 +155,20 @@ void Zapusk() {
         cout << "Kilkist tochok maie buty bilshoiu za nul.\n";
         return;
     }
+
     cout << "--------------------------------------" << endl;
     
     for(int i = 1; i <= n; i++) {
-    cout << "\nVvedit koordinati tochku D" << i << " (x y):" << endl;
-    Kordunaty D = {0, 0};
-    cin >> D.x >> D.y;
+        cout << "\nVvedit koordinati tochku D" << i << " (x y):" << endl;
+        Kordunaty D;
+        cin >> D.x >> D.y;
 
-    cout << "\n--------------------------------------" << endl;
-    cout << "Polozhennya tochky D" << i << " vidnosno trykutnyka ABC: " << endl;
-    cout << "--------------------------------------" << endl;
+        cout << "\n--------------------------------------" << endl;
+        cout << "Polozhennya tochky D" << i << " vidnosno trykutnyka ABC: " << endl;
+        cout << "--------------------------------------" << endl;
 
-    MetodPloshchi( ploshcha, D, A, B, C);
-    MetodVektornohoDobutku(D, A, B, C);
-    cout << "--------------------------------------" << endl;
+        MetodPloshchi(ploshcha, D, A, B, C);
+        MetodVektornohoDobutku(D, A, B, C);
+        cout << "--------------------------------------" << endl;
     }
 }

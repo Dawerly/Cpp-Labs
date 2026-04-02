@@ -5,14 +5,20 @@ struct Kordunaty {
     double x;
     double y;
 };
+
 struct Trukytnuk {
     Kordunaty A;
     Kordunaty B;
     Kordunaty C;
+
+    double area() const;
+    bool contains(const Kordunaty &P) const;
 };
 
-void Vidstan(double &vidstAB, double &vidstAC, double &vidstBC, Kordunaty &A, Kordunaty &B, Kordunaty &C);
-void Heron(double &vidstAB, double &vidstAC, double &vidstBC, double &p, double &ploshcha);
+double distance(const Kordunaty &p1, const Kordunaty &p2);
+void Heron(const Trukytnuk &t);
+
+// void Vidstan(double &vidstAB, double &vidstAC, double &vidstBC, Kordunaty &A, Kordunaty &B, Kordunaty &C);
 void baruscentr(Kordunaty &A, Kordunaty &B, Kordunaty &C);
 void Incenter(Kordunaty &A, Kordunaty &B, Kordunaty &C, double &vidstAB, double &vidstAC, double &vidstBC);
 void Circumcenter(Kordunaty &A, Kordunaty &B, Kordunaty &C);
