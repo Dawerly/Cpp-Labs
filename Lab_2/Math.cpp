@@ -1,16 +1,9 @@
 #include <cmath>
 #include "Math.h"
 #include <iostream>
+#include <Windows.h>
 
 using namespace std;
-
-
-
-// void Vidstan(double &vidstAB, double &vidstAC, double &vidstBC, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
-//     vidstAB = sqrt(pow((B.x - A.x), 2) + pow((B.y - A.y), 2));
-//     vidstAC = sqrt(pow((C.x - A.x), 2) + pow((C.y - A.y), 2));
-//     vidstBC = sqrt(pow((C.x - B.x), 2) + pow((C.y - B.y), 2));
-// }
 
 double distance(const Kordunaty &p1, const Kordunaty &p2) {
     return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
@@ -57,7 +50,7 @@ void Circumcenter(Kordunaty &A, Kordunaty &B, Kordunaty &C) {
     double D = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
 
     if (D == 0) {
-        cout << "Trukytnuk neisnue." << endl;
+        cout << "Trukytnuk vurodzhenui." << endl;
         return;
     }
 
@@ -66,55 +59,66 @@ void Circumcenter(Kordunaty &A, Kordunaty &B, Kordunaty &C) {
     cout << "Circumcenter: ( x=" << x_circumcenter << ", y=" << y_circumcenter << ")" << endl;
 }
 
-void MetodPloshchi(double &ploshcha, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C) 
+void MetodPloshchi(double &ploshcha, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
 {
-    double ploshDAB, ploshDBC, ploshDCA;
-    ploshDAB = 0.5 * fabs(D.x * (A.y - B.y) + A.x * (B.y - D.y) + B.x * (D.y - A.y));
-    ploshDBC = 0.5 * fabs(D.x * (B.y - C.y) + B.x * (C.y - D.y) + C.x * (D.y - B.y));
-    ploshDCA = 0.5 * fabs(D.x * (C.y - A.y) + C.x * (A.y - D.y) + A.x * (D.y - C.y));
+    const double EPS = 1e-9;
 
-    double suma = ploshDAB + ploshDBC + ploshDCA;
+    double ploshDAB = fabs(D.x*(A.y-B.y) + A.x*(B.y-D.y) + B.x*(D.y-A.y));
+    double ploshDBC = fabs(D.x*(B.y-C.y) + B.x*(C.y-D.y) + C.x*(D.y-B.y));
+    double ploshDCA = fabs(D.x*(C.y-A.y) + C.x*(A.y-D.y) + A.x*(D.y-C.y));
 
-    if (fabs(suma - ploshcha) <= 0.001) 
+    double suma = (ploshDAB + ploshDBC + ploshDCA) / 2.0;
+
+    if (fabs(suma - ploshcha) < EPS && ploshcha > EPS)
     {
-        if (ploshDAB < 1e-6 || ploshDBC < 1e-6 || ploshDCA < 1e-6) {
-            cout << "Tochka znakhodytsia NA MEZHI trykutnyka (Za metodom ploshchi)" << endl;
-        } else {
-            cout << "Tochka znakhodytsia VSEREDYNI trykutnyka (Za metodom ploshchi)" << endl;
-        }
+        if (ploshDAB < EPS || ploshDBC < EPS || ploshDCA < EPS)
+            cout << "Tochka na mezhi (ploshcha)" << endl;
+        else
+            cout << "Tochka vseredyni trykutnyka (ploshcha)" << endl;
     }
-    else if (suma > ploshcha + 0.001) {
-        cout << "Tochka znakhodytsia ZZOVNI trykutnyka (Za metodom ploshchi)" << endl;
-    } 
-    else {
-        cout << "Pomylka v obchyslenni ploshch!" << endl;
-    }
-
-}
-
-
-void MetodVektornohoDobutku( Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
-    double VidstABD, VidstBCD, VidstCAD;
-    VidstABD = (B.x - A.x) * (D.y - A.y) - (B.y - A.y) * (D.x - A.x);
-    VidstBCD = (C.x - B.x) * (D.y - B.y) - (C.y - B.y) * (D.x - B.x);
-    VidstCAD = (A.x - C.x) * (D.y - C.y) - (A.y - C.y) * (D.x - C.x);
-
-    if (VidstABD > 0 && VidstBCD > 0 && VidstCAD > 0) {
-        cout << "Tochka znakhodytsia vseredyni trykutnyka (Za metodom vektornoho dobutku)" << endl;
-    }
-    else if (VidstABD == 0 || VidstBCD == 0 || VidstCAD == 0) {
-        cout << "Tochka znakhodytsia na mezhi (Za metodom vektornoho dobutku)" << endl;
-    }
-    else if (VidstABD < 0 || VidstBCD < 0 || VidstCAD < 0) {
-        cout << "Tochka znakhodytsia zzovni trykutnyka (Za metodom vektornoho dobutku)" << endl;
+    else
+    {
+        cout << "Tochka zzovni trykutnyka (ploshcha)" << endl;
     }
 }
 
+void MetodVektornohoDobutku(Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
+{
+    const double EPS = 1e-9;
+
+    double VidstABD = (B.x - A.x) * (D.y - A.y) - (B.y - A.y) * (D.x - A.x);
+    double VidstBCD = (C.x - B.x) * (D.y - B.y) - (C.y - B.y) * (D.x - B.x);
+    double VidstCAD = (A.x - C.x) * (D.y - C.y) - (A.y - C.y) * (D.x - C.x);
+
+    if (fabs(VidstABD) < EPS) VidstABD = 0;
+    if (fabs(VidstBCD) < EPS) VidstBCD = 0;
+    if (fabs(VidstCAD) < EPS) VidstCAD = 0;
+
+    if (VidstABD == 0 && VidstBCD == 0 && VidstCAD == 0)
+    {
+        cout << "Tochka zzovni trykutnyka (vektor)" << endl;
+        return;
+    }
+
+    if ((VidstABD >= 0 && VidstBCD >= 0 && VidstCAD >= 0) || (VidstABD <= 0 && VidstBCD <= 0 && VidstCAD <= 0))
+    {
+        if (VidstABD == 0 || VidstBCD == 0 || VidstCAD == 0)
+            cout << "Tochka na mezhi (vektor)" << endl;
+        else
+            cout << "Tochka vseredyni trykutnyka (vektor)" << endl;
+    }
+    else
+    {
+        cout << "Tochka zzovni trykutnyka (vektor)" << endl;
+    }
+}
 
 void Zapusk() {
+    SetConsoleCP(65001);         
+    SetConsoleOutputCP(65001);
     Kordunaty A, B, C;
     cout << "\n\n--------------------------------------" << endl;
-    cout << "Vvedit koordinati A(x,y): " << endl;
+    cout << "Введіть кординати A(x,y): " << endl;
     cin >> A.x >> A.y;
     cout << "Vvedit koordinati B(x,y): " << endl;
     cin >> B.x >> B.y;
@@ -134,8 +138,13 @@ void Zapusk() {
     cout << "Vidstan mizh BC: " << vidstBC << endl;
     cout << "--------------------------------------\n" << endl;
 
-    double ploshcha = t.area();
     double p = (vidstAB + vidstAC + vidstBC) / 2.0;
+    double ploshcha = t.area();
+    if (ploshcha < 1e-9) {
+        cout << "--------------------------------------" << endl;
+        cout << "Trukytnuk vurodzhenui." << endl;
+        cout << "--------------------------------------\n" << endl;
+    }
 
     cout << "--------------------------------------" << endl;
     cout << "Pivperumeter: " << p << endl;
