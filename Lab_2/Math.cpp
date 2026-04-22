@@ -2,6 +2,7 @@
 #include "Math.h"
 #include <iostream>
 #include <Windows.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -59,57 +60,54 @@ void Circumcenter(Kordunaty &A, Kordunaty &B, Kordunaty &C) {
     cout << "Circumcenter: ( x=" << x_circumcenter << ", y=" << y_circumcenter << ")" << endl;
 }
 
-void MetodPloshchi(double &ploshcha, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
-{
+double gaussArea(const Kordunaty &A, const Kordunaty &B, const Kordunaty &C) {
+    
+    double s_gauss = 0.5 * fabs(A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
+    return s_gauss;
+}
+void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
+    
+    double ploshDAB = 0.5 * fabs(D.x * (A.y - B.y) + A.x * (B.y - D.y) + B.x * (D.y - A.y));
+    double ploshDBC = 0.5 * fabs(D.x * (B.y - C.y) + B.x * (C.y - D.y) + C.x * (D.y - B.y));
+    double ploshDCA = 0.5 * fabs(D.x * (C.y - A.y) + C.x * (A.y - D.y) + A.x * (D.y - C.y));
+
+    double suma = ploshDAB + ploshDBC + ploshDCA;
+    
     const double EPS = 1e-9;
 
-    double ploshDAB = fabs(D.x*(A.y-B.y) + A.x*(B.y-D.y) + B.x*(D.y-A.y));
-    double ploshDBC = fabs(D.x*(B.y-C.y) + B.x*(C.y-D.y) + C.x*(D.y-B.y));
-    double ploshDCA = fabs(D.x*(C.y-A.y) + C.x*(A.y-D.y) + A.x*(D.y-C.y));
-
-    double suma = (ploshDAB + ploshDBC + ploshDCA) / 2.0;
-
-    if (fabs(suma - ploshcha) < EPS && ploshcha > EPS)
-    {
-        if (ploshDAB < EPS || ploshDBC < EPS || ploshDCA < EPS)
+    if (fabs(suma - s_gauss) < EPS) {
+        if (ploshDAB < 0.0 || ploshDBC < 0.0 || ploshDCA < 0.0) {
             cout << "Tochka na mezhi (ploshcha)" << endl;
-        else
+        }
+        else {
             cout << "Tochka vseredyni trykutnyka (ploshcha)" << endl;
+        }
     }
-    else
-    {
+    else {
         cout << "Tochka zzovni trykutnyka (ploshcha)" << endl;
     }
 }
 
 void MetodVektornohoDobutku(Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
 {
-    const double EPS = 1e-9;
 
     double VidstABD = (B.x - A.x) * (D.y - A.y) - (B.y - A.y) * (D.x - A.x);
     double VidstBCD = (C.x - B.x) * (D.y - B.y) - (C.y - B.y) * (D.x - B.x);
     double VidstCAD = (A.x - C.x) * (D.y - C.y) - (A.y - C.y) * (D.x - C.x);
 
-    if (fabs(VidstABD) < EPS) VidstABD = 0;
-    if (fabs(VidstBCD) < EPS) VidstBCD = 0;
-    if (fabs(VidstCAD) < EPS) VidstCAD = 0;
+    bool has_pos = (VidstABD > 0.0 || VidstBCD > 0.0 || VidstCAD > 0.0);
+    bool has_neg = (VidstABD < 0.0 || VidstBCD < 0.0 || VidstCAD < 0.0);
 
-    if (VidstABD == 0 && VidstBCD == 0 && VidstCAD == 0)
-    {
+    if (has_pos && has_neg) {
         cout << "Tochka zzovni trykutnyka (vektor)" << endl;
-        return;
-    }
-
-    if ((VidstABD >= 0 && VidstBCD >= 0 && VidstCAD >= 0) || (VidstABD <= 0 && VidstBCD <= 0 && VidstCAD <= 0))
-    {
-        if (VidstABD == 0 || VidstBCD == 0 || VidstCAD == 0)
+    } 
+    else {
+        if (D.x < fmin(A.x, fmin(B.x, C.x)) - 0.0 || D.x > fmax(A.x, fmax(B.x, C.x)) + 0.0)
+            cout << "Tochka zzovni trykutnyka (vektor)" << endl;
+        else if (fabs(VidstABD) < 0.0 || fabs(VidstBCD) < 0.0 || fabs(VidstCAD) < 0.0)
             cout << "Tochka na mezhi (vektor)" << endl;
         else
             cout << "Tochka vseredyni trykutnyka (vektor)" << endl;
-    }
-    else
-    {
-        cout << "Tochka zzovni trykutnyka (vektor)" << endl;
     }
 }
 
@@ -117,6 +115,8 @@ void Zapusk() {
     SetConsoleCP(65001);         
     SetConsoleOutputCP(65001);
     Kordunaty A, B, C;
+    cout << fixed << setprecision(15);
+
     cout << "\n\n--------------------------------------" << endl;
     cout << "Введіть кординати A(x,y): " << endl;
     cin >> A.x >> A.y;
@@ -138,6 +138,7 @@ void Zapusk() {
     cout << "Vidstan mizh BC: " << vidstBC << endl;
     cout << "--------------------------------------\n" << endl;
 
+    double s_gauss = gaussArea(A, B, C);
     double p = (vidstAB + vidstAC + vidstBC) / 2.0;
     double ploshcha = t.area();
     if (ploshcha < 1e-9) {
@@ -176,7 +177,7 @@ void Zapusk() {
         cout << "Polozhennya tochky D" << i << " vidnosno trykutnyka ABC: " << endl;
         cout << "--------------------------------------" << endl;
 
-        MetodPloshchi(ploshcha, D, A, B, C);
+        MetodPloshchi(s_gauss, D, A, B, C);
         MetodVektornohoDobutku(D, A, B, C);
         cout << "--------------------------------------" << endl;
     }
