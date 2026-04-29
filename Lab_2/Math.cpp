@@ -65,8 +65,9 @@ double gaussArea(const Kordunaty &A, const Kordunaty &B, const Kordunaty &C) {
     double s_gauss = 0.5 * fabs(A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
     return s_gauss;
 }
-void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C) {
-    
+
+void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
+{
     double ploshDAB = 0.5 * fabs(D.x * (A.y - B.y) + A.x * (B.y - D.y) + B.x * (D.y - A.y));
     double ploshDBC = 0.5 * fabs(D.x * (B.y - C.y) + B.x * (C.y - D.y) + C.x * (D.y - B.y));
     double ploshDCA = 0.5 * fabs(D.x * (C.y - A.y) + C.x * (A.y - D.y) + A.x * (D.y - C.y));
@@ -76,8 +77,33 @@ void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Ko
     const double EPS = 1e-9;
 
     if (fabs(suma - s_gauss) < EPS) {
-        if (ploshDAB < 0.0 || ploshDBC < 0.0 || ploshDCA < 0.0) {
-            cout << "Tochka na mezhi (ploshcha)" << endl;
+        // Перевіряємо, чи лежить на одній зі сторін (площа одного з підтрикутників ≈ 0)
+        if (ploshDAB < EPS || ploshDBC < EPS || ploshDCA < EPS) {
+            // Додаткова перевірка через відстані (більш надійна)
+            double dAB, dBC, dCA, dDP_AB, dDP_BC, dDP_CA;
+
+            dAB = sqrt((B.x - A.x)*(B.x - A.x) + (B.y - A.y)*(B.y - A.y));
+            dBC = sqrt((C.x - B.x)*(C.x - B.x) + (C.y - B.y)*(C.y - B.y));
+            dCA = sqrt((A.x - C.x)*(A.x - C.x) + (A.y - C.y)*(A.y - C.y));
+
+            dDP_AB = sqrt((D.x - A.x)*(D.x - A.x) + (D.y - A.y)*(D.y - A.y)) +
+                     sqrt((D.x - B.x)*(D.x - B.x) + (D.y - B.y)*(D.y - B.y));
+
+            dDP_BC = sqrt((D.x - B.x)*(D.x - B.x) + (D.y - B.y)*(D.y - B.y)) +
+                     sqrt((D.x - C.x)*(D.x - C.x) + (D.y - C.y)*(D.y - C.y));
+
+            dDP_CA = sqrt((D.x - C.x)*(D.x - C.x) + (D.y - C.y)*(D.y - C.y)) +
+                     sqrt((D.x - A.x)*(D.x - A.x) + (D.y - A.y)*(D.y - A.y));
+
+            bool on_AB = fabs(dDP_AB - dAB) < EPS;
+            bool on_BC = fabs(dDP_BC - dBC) < EPS;
+            bool on_CA = fabs(dDP_CA - dCA) < EPS;
+
+            if (on_AB || on_BC || on_CA) {
+                cout << "Tochka na mezhi (ploshcha)" << endl;
+            } else {
+                cout << "Tochka zzovni trykutnyka (ploshcha)" << endl;
+            }
         }
         else {
             cout << "Tochka vseredyni trykutnyka (ploshcha)" << endl;
@@ -90,24 +116,53 @@ void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Ko
 
 void MetodVektornohoDobutku(Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty &C)
 {
-
     double VidstABD = (B.x - A.x) * (D.y - A.y) - (B.y - A.y) * (D.x - A.x);
     double VidstBCD = (C.x - B.x) * (D.y - B.y) - (C.y - B.y) * (D.x - B.x);
     double VidstCAD = (A.x - C.x) * (D.y - C.y) - (A.y - C.y) * (D.x - C.x);
 
-    bool has_pos = (VidstABD > 0.0 || VidstBCD > 0.0 || VidstCAD > 0.0);
-    bool has_neg = (VidstABD < 0.0 || VidstBCD < 0.0 || VidstCAD < 0.0);
+    const double EPS = 1e-9;
+
+    // Приводимо дуже малі значення до нуля
+    if (fabs(VidstABD) < EPS) VidstABD = 0.0;
+    if (fabs(VidstBCD) < EPS) VidstBCD = 0.0;
+    if (fabs(VidstCAD) < EPS) VidstCAD = 0.0;
+
+    bool has_pos = (VidstABD > 0.0) || (VidstBCD > 0.0) || (VidstCAD > 0.0);
+    bool has_neg = (VidstABD < 0.0) || (VidstBCD < 0.0) || (VidstCAD < 0.0);
 
     if (has_pos && has_neg) {
         cout << "Tochka zzovni trykutnyka (vektor)" << endl;
-    } 
-    else {
-        if (D.x < fmin(A.x, fmin(B.x, C.x)) - 0.0 || D.x > fmax(A.x, fmax(B.x, C.x)) + 0.0)
-            cout << "Tochka zzovni trykutnyka (vektor)" << endl;
-        else if (fabs(VidstABD) < 0.0 || fabs(VidstBCD) < 0.0 || fabs(VidstCAD) < 0.0)
+    }
+    else if (VidstABD == 0.0 || VidstBCD == 0.0 || VidstCAD == 0.0) {
+        // Додаткова перевірка, чи справді лежить на стороні (через суму відстаней)
+        double dAB, dBC, dCA, dDP_AB, dDP_BC, dDP_CA;  // тимчасові змінні
+
+        // Обчислюємо довжини сторін і відрізків до точки D
+        dAB = sqrt((B.x - A.x)*(B.x - A.x) + (B.y - A.y)*(B.y - A.y));
+        dBC = sqrt((C.x - B.x)*(C.x - B.x) + (C.y - B.y)*(C.y - B.y));
+        dCA = sqrt((A.x - C.x)*(A.x - C.x) + (A.y - C.y)*(A.y - C.y));
+
+        dDP_AB = sqrt((D.x - A.x)*(D.x - A.x) + (D.y - A.y)*(D.y - A.y)) +
+                 sqrt((D.x - B.x)*(D.x - B.x) + (D.y - B.y)*(D.y - B.y));
+
+        dDP_BC = sqrt((D.x - B.x)*(D.x - B.x) + (D.y - B.y)*(D.y - B.y)) +
+                 sqrt((D.x - C.x)*(D.x - C.x) + (D.y - C.y)*(D.y - C.y));
+
+        dDP_CA = sqrt((D.x - C.x)*(D.x - C.x) + (D.y - C.y)*(D.y - C.y)) +
+                 sqrt((D.x - A.x)*(D.x - A.x) + (D.y - A.y)*(D.y - A.y));
+
+        bool on_AB = fabs(dDP_AB - dAB) < EPS;
+        bool on_BC = fabs(dDP_BC - dBC) < EPS;
+        bool on_CA = fabs(dDP_CA - dCA) < EPS;
+
+        if (on_AB || on_BC || on_CA) {
             cout << "Tochka na mezhi (vektor)" << endl;
-        else
-            cout << "Tochka vseredyni trykutnyka (vektor)" << endl;
+        } else {
+            cout << "Tochka zzovni trykutnyka (vektor)" << endl;
+        }
+    }
+    else {
+        cout << "Tochka vseredyni trykutnyka (vektor)" << endl;
     }
 }
 
