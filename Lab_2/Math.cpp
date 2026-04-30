@@ -77,9 +77,7 @@ void MetodPloshchi(double &s_gauss, Kordunaty &D, Kordunaty &A, Kordunaty &B, Ko
     const double EPS = 1e-9;
 
     if (fabs(suma - s_gauss) < EPS) {
-        // Перевіряємо, чи лежить на одній зі сторін (площа одного з підтрикутників ≈ 0)
         if (ploshDAB < EPS || ploshDBC < EPS || ploshDCA < EPS) {
-            // Додаткова перевірка через відстані (більш надійна)
             double dAB, dBC, dCA, dDP_AB, dDP_BC, dDP_CA;
 
             dAB = sqrt((B.x - A.x)*(B.x - A.x) + (B.y - A.y)*(B.y - A.y));
@@ -122,7 +120,6 @@ void MetodVektornohoDobutku(Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty 
 
     const double EPS = 1e-9;
 
-    // Приводимо дуже малі значення до нуля
     if (fabs(VidstABD) < EPS) VidstABD = 0.0;
     if (fabs(VidstBCD) < EPS) VidstBCD = 0.0;
     if (fabs(VidstCAD) < EPS) VidstCAD = 0.0;
@@ -134,10 +131,8 @@ void MetodVektornohoDobutku(Kordunaty &D, Kordunaty &A, Kordunaty &B, Kordunaty 
         cout << "Tochka zzovni trykutnyka (vektor)" << endl;
     }
     else if (VidstABD == 0.0 || VidstBCD == 0.0 || VidstCAD == 0.0) {
-        // Додаткова перевірка, чи справді лежить на стороні (через суму відстаней)
-        double dAB, dBC, dCA, dDP_AB, dDP_BC, dDP_CA;  // тимчасові змінні
+        double dAB, dBC, dCA, dDP_AB, dDP_BC, dDP_CA;  
 
-        // Обчислюємо довжини сторін і відрізків до точки D
         dAB = sqrt((B.x - A.x)*(B.x - A.x) + (B.y - A.y)*(B.y - A.y));
         dBC = sqrt((C.x - B.x)*(C.x - B.x) + (C.y - B.y)*(C.y - B.y));
         dCA = sqrt((A.x - C.x)*(A.x - C.x) + (A.y - C.y)*(A.y - C.y));
