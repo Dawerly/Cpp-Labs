@@ -1,6 +1,5 @@
 #include "Beer.h"
 using namespace std;
-typedef unsigned char byte;
 
 Beer::Beer(string n, int mv,int ap, bool craft) : Alco(n, mv, ap) {
     this->isCraft = craft;

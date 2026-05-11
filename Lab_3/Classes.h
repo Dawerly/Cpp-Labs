@@ -6,20 +6,16 @@ private:
     double a;
     double b;
     double EPS;
-    double Func;
-    double D_Func;
-    double KorinDih;
-    double KorinNut;
 public:
     Class(void);
     ~Class(void);
     void setA(double a);
     void setB(double b);
     void setEPS(double EPS);
-    void setFunc(double Func);
-    void setD_Func(double D_Func);
-    void setKorinDih(double KorinDih);
-    void setKorinNut(double KorinNut);
+    double Func;
+    double D_Func;
+    double KorinDih;
+    double KorinNut;
 
     void getA(double &a)const;
     void getB(double &b)const;

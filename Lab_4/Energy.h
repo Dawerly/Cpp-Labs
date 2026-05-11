@@ -3,7 +3,6 @@
 
 #include "NonAlco.h"
 using namespace std;
-typedef unsigned char byte;
 
 class Energy : public NonAlco {
 private:

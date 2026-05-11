@@ -1,6 +1,5 @@
 #include "CocaCola.h"
 using namespace std;
-typedef unsigned char byte;
 
 CocaCola::CocaCola(string n, int mv, bool g, bool sf, string f) : NonAlco(n, mv, g) {
     this->SugarFree = sf;

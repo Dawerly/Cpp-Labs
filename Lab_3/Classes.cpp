@@ -13,10 +13,6 @@ Class::~Class(){}
 void Class::setA(double a){ this->a = a; }
 void Class::setB(double b){ this->b = b; }
 void Class::setEPS(double EPS){ this->EPS = EPS; }
-void Class::setFunc(double Func){ this->Func = Func; }
-void Class::setD_Func(double D_Func){ this->D_Func = D_Func; }
-void Class::setKorinDih(double KorinDih){ this->KorinDih = KorinDih; }
-void Class::setKorinNut(double KorinNut){ this->KorinNut = KorinNut; }
 
 void Class::getA(double &a)const{ a = this->a; }
 void Class::getB(double &b)const{ b = this->b; }
@@ -46,11 +42,9 @@ void Class::MetodDihotomi(double a, double b, double EPS){
 
     Func_calc(a);                    
     double Func_a = Func;
-    getFunc(Func_a);
 
     Func_calc(b);                    
     double Func_b = Func;
-    getFunc(Func_b);
 
     if(std::isnan(Func_a) || std::isnan(Func_b)){
         cout << "-------------------[ERROR]-------------------" << endl;
@@ -60,12 +54,12 @@ void Class::MetodDihotomi(double a, double b, double EPS){
     }
 
     if (BilaNolia(Func_a, 0.0)) {
-        setKorinDih(a);
+        KorinDih = a;
         return;
     }
 
     if (BilaNolia(Func_b, 0.0)) {
-        setKorinDih(b);
+        KorinDih = b;
         return;
     }
 
@@ -85,7 +79,7 @@ void Class::MetodDihotomi(double a, double b, double EPS){
         getFunc(Func_c);
 
         if (BilaNolia(Func_c, 0.0)) {
-            setKorinDih(c);
+            KorinDih = c;
             return;
         }
         if (Func_a * Func_c < 0) {
@@ -97,7 +91,7 @@ void Class::MetodDihotomi(double a, double b, double EPS){
         }
         i++;
     }
-    setKorinDih(c);
+    KorinDih = c;
 }
 
 void Class::MetodNutona(double x0){
@@ -121,15 +115,16 @@ void Class::MetodNutona(double x0){
         }
 
         x1 = x0 - Func_x0 / D_Func_x0;
+        cout << "Ітерація " << i + 1 << ": x = " << x1 << endl;
 
         if (BilaNolia(x1 - x0, 0.0)) {
-            setKorinNut(x1);
+            KorinNut = x1;
             return;
         }
 
         x0 = x1;
     }
-    setKorinNut(x0);
+    KorinNut = x0;
 }
 
 void StartProgramm(){
@@ -166,7 +161,7 @@ void StartProgramm(){
     o->setB(b);
     o->setEPS(EPS);
     o->MetodDihotomi(a, b, EPS);
-    o->MetodNutona(a);
+    o->MetodNutona(50.0);
     
     double KorinDih, KorinNut;
     o->getKorinDih(KorinDih);

@@ -3,7 +3,6 @@
 
 #include "Drinks.h"
 using namespace std;
-typedef unsigned char byte;
 
 class NonAlco : public Drinks {
 private:

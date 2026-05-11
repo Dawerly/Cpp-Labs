@@ -11,6 +11,8 @@ struct Trukytnuk {
     Kordunaty B;
     Kordunaty C;
 
+    int containsByArea(const Kordunaty &p) const;
+    int containsByVector(const Kordunaty &p) const;
     double area() const;
     bool contains(const Kordunaty &P) const;
 };

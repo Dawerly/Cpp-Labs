@@ -1,6 +1,5 @@
 #include "NonAlco.h"
 using namespace std;
-typedef unsigned char byte;
 
 NonAlco::NonAlco(string n, int mv, bool g) : Drinks(n, mv) {
     this->Gas = g;

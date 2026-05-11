@@ -25,6 +25,7 @@ void StartProgram() {
     CocaCola myCoke("Coca-Cola", 500, true, false, "Vanilla");
     Energy myEnergy("Red Bull", 250, true, 80);
     vector<Drinks*> drinkMenu;
+    drinkMenu.push_back(&myJuice);
     drinkMenu.push_back(&myVodka);
     drinkMenu.push_back(&myBeer);
     drinkMenu.push_back(&myCoke);
