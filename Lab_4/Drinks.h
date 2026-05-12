@@ -7,7 +7,7 @@
 using namespace std;
 
 class Drinks {
-private:
+protected:
     string name;
     int waterVolume;
 public:
