@@ -20,12 +20,18 @@ void StartProgram() {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
 
+    Alco *myVodka = new Alco("Горілка", 500, 40.0);
+    NonAlco *myJuice = new NonAlco("Сік", 300, false);
+    Beer *myBeer = new Beer("Dunkell", 330, 4.5, true);
+    CocaCola *myCoke = new CocaCola("Coca-Cola", 500, true, false, "Vanilla");
+    Energy *myEnergy = new Energy("Red Bull", 250, true, 80);
+
     vector<Drinks*> drinkMenu;
-    drinkMenu.push_back(new NonAlco("Сік", 300, false));
-    drinkMenu.push_back(new Alco("Горілка", 500, 40.0));
-    drinkMenu.push_back(new Beer("Dunkell", 330, 4.5, true));
-    drinkMenu.push_back(new CocaCola("Coca-Cola", 500, true, false, "Vanilla"));
-    drinkMenu.push_back(new Energy("Red Bull", 250, true, 80));
+    drinkMenu.push_back(myJuice);
+    drinkMenu.push_back(myVodka);
+    drinkMenu.push_back(myBeer);
+    drinkMenu.push_back(myCoke);
+    drinkMenu.push_back(myEnergy);
 
     for (size_t i = 0; i < drinkMenu.size(); ++i) {   
         cout << "=======[Напій №" << i + 1 << "]=======" << endl;
@@ -34,7 +40,10 @@ void StartProgram() {
         cout << endl;
     }
 
-    for (size_t i = 0; i < drinkMenu.size(); ++i) {
-        delete drinkMenu[i];
-    }
+
+    delete myVodka;
+    delete myJuice;
+    delete myBeer;
+    delete myCoke;
+    delete myEnergy;    
 }
