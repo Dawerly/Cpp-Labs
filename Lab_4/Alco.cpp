@@ -1,11 +1,13 @@
 #include "Alco.h"
+#include "Drinks.h"
+
 using namespace std;
 
 Alco::Alco(string n, int mv, double ap) : Drinks(n, mv) {
     this->alcoholPercentage = ap;
 }
 
-void Alco::Recommend() const {
+void Alco::Recommend() {
     cout << "Рекомендація що до вживання: " << name << " має " << alcoholPercentage << "% алкоголю." << endl;
     cout << "Пий відповідально!" << endl;
     if (alcoholPercentage < 9.0) {
@@ -15,12 +17,12 @@ void Alco::Recommend() const {
     }
 }
 
-void Alco::Info() const {
+void Alco::Info() {
     Drinks::Info();
     cout << "Вміст алкоголю: " << alcoholPercentage << "%" << endl;
 }
 
-void Alco::SlaboAlco(bool sa) const {
+void Alco::SlaboAlco(bool sa) {
     if (sa) {
         cout << name << " є слабоалкогольним напоєм." << endl;
     } else {

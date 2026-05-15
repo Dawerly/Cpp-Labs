@@ -9,10 +9,10 @@ private:
     bool Gas;
 public:
     NonAlco(string n, int mv, bool g);
-    void Recommend() const override;
-    void Info() const override;
+    void Recommend() override;
+    void Info() override;
 
-    void SALE(bool s) const;
+    void SALE(bool s);
 };
 
 #endif // NONALCO_H

@@ -9,9 +9,8 @@ private:
     int CaffeineContent;
 public:
     Energy(string n, int mv, bool g, int cc);
-    void Recommend() const override;
-    void Info() const override;
+    void Recommend() override;
+    void Info() override;
 
 };
-
 #endif // ENERGY_H

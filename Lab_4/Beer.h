@@ -9,10 +9,10 @@ private:
     bool isCraft;
 public:
     Beer(string n, int mv,int ap, bool craft);
-    void Recommend() const override;
-    void Info() const override;
+    void Recommend() override;
+    void Info() override;
 
-    void temperature(int t) const;
+    void temperature(int t);
 };
 
 #endif // BEER_H

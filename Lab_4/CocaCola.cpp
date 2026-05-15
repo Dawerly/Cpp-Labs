@@ -1,4 +1,7 @@
 #include "CocaCola.h"
+#include "Drinks.h"
+#include "NonAlco.h"
+
 using namespace std;
 
 CocaCola::CocaCola(string n, int mv, bool g, bool sf, string f) : NonAlco(n, mv, g) {
@@ -6,7 +9,7 @@ CocaCola::CocaCola(string n, int mv, bool g, bool sf, string f) : NonAlco(n, mv,
     this->flavor = f;
 }
 
-void CocaCola::Recommend() const {
+void CocaCola::Recommend() {
     NonAlco::Recommend();
     if (SugarFree) {
         cout << "Ця Coca-Cola без цукру" << endl;
@@ -15,12 +18,12 @@ void CocaCola::Recommend() const {
     }
 }
 
-void CocaCola::Info() const {
+void CocaCola::Info() {
     NonAlco::Info();
     cout << "Смак цієї Coca-Cola: " << flavor << endl;
 }
 
-void CocaCola::diabeticFriendly(bool df) const {
+void CocaCola::diabeticFriendly(bool df) {
     if (df) {
         cout << "Ця Coca-Cola підходить для діабетиків!" << endl;
     } else {

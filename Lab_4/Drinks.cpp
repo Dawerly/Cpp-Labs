@@ -6,6 +6,8 @@ Drinks::Drinks(string n, int mv) {
     this->waterVolume = mv;
 }
 
-void Drinks::Info() const {
+void Drinks::Info() {
     cout << "Назва: " << name << ", Об'єм води: " << waterVolume << " мл." << endl;
 }
+
+void Drinks::Recommend() {}

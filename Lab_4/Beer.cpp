@@ -1,11 +1,14 @@
 #include "Beer.h"
+#include "Drinks.h"
+#include "Alco.h"
+
 using namespace std;
 
 Beer::Beer(string n, int mv,int ap, bool craft) : Alco(n, mv, ap) {
     this->isCraft = craft;
 }
 
-void Beer::Recommend() const {
+void Beer::Recommend() {
     Alco::Recommend();
     if (isCraft) {
         cout << "Рекомендація: Ідеально поєднується з м'ясними стравами." << endl;
@@ -14,12 +17,12 @@ void Beer::Recommend() const {
     }
 }
 
-void Beer::Info() const {
+void Beer::Info() {
     Alco::Info();
     cout << "Яке пиво ?: " << (isCraft ? "Темне" : "Світле") << endl;
 }
 
-void Beer::temperature(int t) const {
+void Beer::temperature(int t) {
     cout << "Температура напою: " << t << "°C" << endl;
     if (t < 4) {
         cout << "Це не діло! Постав в холодильник." << endl;

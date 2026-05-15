@@ -1,4 +1,7 @@
 #include "Energy.h"
+#include "Drinks.h"
+#include "NonAlco.h"
+
 using namespace std;
 typedef unsigned char byte;
 
@@ -6,7 +9,7 @@ Energy::Energy(string n, int mv, bool g, int cc) : NonAlco(n, mv, g) {
     this->CaffeineContent = cc;
 }
 
-void Energy::Recommend() const {
+void Energy::Recommend() {
     NonAlco::Recommend();
     if (CaffeineContent < 40) {
         cout << "Дитяча доза кофеїну." << endl;
@@ -21,7 +24,7 @@ void Energy::Recommend() const {
     }
 }
 
-void Energy::Info() const {
+void Energy::Info() {
     NonAlco::Info();
     cout << "Вміст кофеїну: " << CaffeineContent << " мг" << endl;
 }

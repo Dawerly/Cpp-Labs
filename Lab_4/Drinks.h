@@ -13,9 +13,9 @@ protected:
 public:
     Drinks(string n, int mv);
     virtual ~Drinks() = default;
-    virtual void Recommend() const = 0;
+    virtual void Recommend();
 
-    virtual void Info() const;
+    virtual void Info();
 };
 
 #endif // DRINKS_H

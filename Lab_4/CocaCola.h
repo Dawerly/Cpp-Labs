@@ -10,10 +10,10 @@ private:
     string flavor;
 public:
     CocaCola(string n, int mv, bool g, bool sf, string f);
-    void Recommend() const override;
-    void Info() const override;
+    void Recommend() override;
+    void Info() override;
 
-    void diabeticFriendly(bool df) const;
+    void diabeticFriendly(bool df);
 };
 
 #endif // COCACOLA_H
