@@ -13,7 +13,9 @@ public:
     void Recommend() override;
     void Info() override;
 
+
     void diabeticFriendly(bool df);
+    void diabeticFriendly();
 };
 
 #endif // COCACOLA_H

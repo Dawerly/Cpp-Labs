@@ -4,29 +4,31 @@
 
 using namespace std;
 
-CocaCola::CocaCola(string n, int mv, bool g, bool sf, string f) : NonAlco(n, mv, g) {
-    this->SugarFree = sf;
-    this->flavor = f;
-}
+CocaCola::CocaCola(string n, int mv, bool g, bool sf, string f) 
+    : NonAlco(n, mv, g), SugarFree(sf), flavor(f) {}
 
 void CocaCola::Recommend() {
-    NonAlco::Recommend();
+    NonAlco::Recommend();                   
     if (SugarFree) {
-        cout << "Ця Coca-Cola без цукру" << endl;
+        cout << "Ця Coca-Cola без цукру." << endl;
     } else {
-        cout << "Ця Coca-Cola з цукром" << endl;
+        cout << "Ця Coca-Cola з цукром." << endl;
     }
 }
 
 void CocaCola::Info() {
     NonAlco::Info();
-    cout << "Смак цієї Coca-Cola: " << flavor << endl;
+    cout << "Смак: " << flavor << endl;
+    cout << "Без цукру: " << (SugarFree ? "Так" : "Ні") << endl;
+}
+
+void CocaCola::diabeticFriendly() {
+    diabeticFriendly(SugarFree);
 }
 
 void CocaCola::diabeticFriendly(bool df) {
-    if (df) {
-        cout << "Ця Coca-Cola підходить для діабетиків!" << endl;
-    } else {
-        cout << "Ця Coca-Cola не підходить для діабетиків." << endl;
-    }
+    if (df)
+        cout << "Ця Coca-Cola підходить для діабетиків.\n";
+    else
+        cout << "Ця Coca-Cola містить цукор — не підходить для діабетиків.\n";
 }
